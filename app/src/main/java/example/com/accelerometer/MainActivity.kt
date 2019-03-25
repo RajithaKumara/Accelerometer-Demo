@@ -38,14 +38,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             val gravityX = event.values[0]
             val gravityY = event.values[1]
             val gravityZ = event.values[2]
-            textView.text = String.format(format, gravityX) + " m/s2\n" + String.format(format, gravityY) + " m/s2\n" +
-                    String.format(format, gravityZ) + " m/s2"
+            textView.text =
+                getFormatedValue(gravityX) + "\n" + getFormatedValue(gravityY) + "\n" + getFormatedValue(gravityZ)
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
+    private fun getFormatedValue(value: Float): String {
+        return String.format(format, value) + " m/s2"
+    }
+
     fun setRound(view: View) {
-        format = "%." + editText.text + "f"
+        var round = editText.text.toString().toIntOrNull()
+        if (round == null || round > 15 || round < 1) round = 2
+        format = "%." + round + "f"
     }
 }
